@@ -4,112 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BrokeAF</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            colors: {
-              'broke-pink': '#ec4899', // Pink 500
-              'broke-purple': '#8b5cf6', // Violet 500
-              'broke-teal': '#06b6d4', // Cyan 500
-              'broke-dark': '#130b20', // Deep Plum
-            },
-            fontFamily: {
-              sans: ['Inter', 'system-ui', 'sans-serif'],
-              display: ['Poppins', 'Inter', 'sans-serif'],
-            },
-            animation: {
-              'float': 'float 3s ease-in-out infinite',
-              'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
-              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
-            keyframes: {
-              float: {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-10px)' },
-              },
-              fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              }
-            }
-          }
-        }
-      }
-    </script>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;700;800;900&display=swap');
-      
-      /* Colorful Scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #ec4899, #8b5cf6);
-        border-radius: 9999px;
-      }
-      .dark ::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #ec4899, #8b5cf6);
-      }
-      
-      /* Fix Date Picker Icon Visibility */
-      input[type="date"] {
-        color-scheme: light;
-      }
-      .dark input[type="date"] {
-        color-scheme: dark;
-      }
-      
-      body {
-        font-family: 'Inter', sans-serif;
-      }
-      
-      h1, h2, h3, h4, h5, h6 {
-        font-family: 'Poppins', sans-serif;
-      }
-
-      .glass-panel {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(10px);
-      }
-      .dark .glass-panel {
-        background: rgba(19, 11, 32, 0.7);
-        backdrop-filter: blur(10px);
-      }
-      
-      /* Diagonal Pattern for Progress Bars */
-      .pattern-diagonal {
-        background-image: repeating-linear-gradient(
-          45deg,
-          rgba(255,255,255,0.2),
-          rgba(255,255,255,0.2) 10px,
-          transparent 10px,
-          transparent 20px
-        );
-      }
-    </style>
   <script type="importmap">
 {
   "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
     "firebase/": "https://aistudiocdn.com/firebase@^12.6.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
     "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
     "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "recharts": "https://aistudiocdn.com/recharts@^3.5.0"
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.0",
+    "vite": "https://aistudiocdn.com/vite@^7.2.4",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1"
   }
 }
 </script>
 </head>
   <body class="bg-rose-50 text-slate-900 dark:bg-broke-dark dark:text-rose-50 transition-colors duration-300">
     <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

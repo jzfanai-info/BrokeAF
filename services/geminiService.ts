@@ -1,15 +1,18 @@
 import { GoogleGenAI } from "@google/genai";
 import { Transaction } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 export const generateFinancialInsights = async (transactions: Transaction[]): Promise<string> => {
-  // Prepare data for the model
-  const transactionSummary = transactions.slice(0, 50).map(t => 
-    `${t.date}: ${t.type.toUpperCase()} - ₹${t.amount} (${t.category}) - ${t.notes || ''}`
-  ).join('\n');
+  try {
+    // Initialize the AI client with the API key from environment variables
+    // Per guidelines, use process.env.API_KEY directly and assume it is available
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-  const prompt = `
+    // Prepare data for the model
+    const transactionSummary = transactions.slice(0, 50).map(t => 
+      `${t.date}: ${t.type.toUpperCase()} - ₹${t.amount} (${t.category}) - ${t.notes || ''}`
+    ).join('\n');
+
+    const prompt = `
     Analyze the following recent financial transactions for a personal finance app user in India (Currency: INR ₹).
     Provide a concise, friendly, and actionable summary (max 300 words).
     
@@ -22,7 +25,6 @@ export const generateFinancialInsights = async (transactions: Transaction[]): Pr
     ${transactionSummary}
   `;
 
-  try {
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: prompt,
