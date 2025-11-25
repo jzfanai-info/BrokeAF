@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Allow read-only public data if any
+    match /public/{doc=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Users root: each user can read/write only their own docs
+    match /users/{userId}/{subCollection=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // Optionally make stricter rules per collection:
+      // transactions validation
+      match /transactions/{transId} {
+        allow create: if request.auth != null
+                      && request.auth.uid == userId
+                      && request.resource.data.keys().hasAll(['type','amount','date','category'])
+                      && request.resource.data.amount is number
+                      && request.resource.data.amount >= 0
+                      && request.resource.data.type in ['income','expense','transfer']
+                      && request.resource.data.date is timestamp;
+        allow update: if request.auth != null && request.auth.uid == userId;
+        allow delete: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}
