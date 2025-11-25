@@ -68,7 +68,7 @@ export const About: React.FC = () => {
             <li className="flex gap-2 items-start">
               <Sparkles className="text-emerald-500 w-4 h-4 mt-1" />
               <span>
-                <strong>Hybrid Auth</strong> – Firebase + Demo Mode fallback.
+                <strong>Hybrid Auth </strong> – Firebase + Demo Mode fallback.
               </span>
             </li>
 
