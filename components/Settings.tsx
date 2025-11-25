@@ -4,8 +4,16 @@ import { Button } from './ui/Button';
 import { User } from 'firebase/auth';
 import { Check, Camera, Sparkles, User as UserIcon } from 'lucide-react';
 
+interface DemoUser {
+  uid: string;
+  displayName: string;
+  email: string;
+  photoURL: string | null;
+}
+
 interface SettingsProps {
-  user: User;
+  user: User | DemoUser;
+  isDemo: boolean;
   onUpdateUser: (updates: { photoURL?: string; displayName?: string }) => Promise<void>;
 }
 
@@ -14,7 +22,7 @@ const AVATAR_SEEDS = [
   'Milo', 'Saitama', 'Buzz', 'Lola', 'Bella', 'Rocky'
 ];
 
-export const Settings: React.FC<SettingsProps> = ({ user, onUpdateUser }) => {
+export const Settings: React.FC<SettingsProps> = ({ user, isDemo, onUpdateUser }) => {
   const [selectedAvatar, setSelectedAvatar] = useState<string>(user.photoURL || '');
   const [displayName, setDisplayName] = useState<string>(user.displayName || '');
   const [loading, setLoading] = useState(false);
@@ -67,6 +75,11 @@ export const Settings: React.FC<SettingsProps> = ({ user, onUpdateUser }) => {
           <div className="text-center md:text-left flex-1 min-w-0">
             <h3 className="font-black text-2xl font-display text-slate-800 dark:text-white truncate">{user.displayName || 'BrokeAF User'}</h3>
             <p className="text-slate-500 dark:text-slate-400 font-medium truncate">{user.email}</p>
+            {isDemo && (
+              <p className="text-pink-500 text-xs font-bold mt-2 uppercase tracking-wide bg-pink-50 dark:bg-pink-900/30 w-fit px-3 py-1 rounded-lg mx-auto md:mx-0">
+                Demo Mode Active
+              </p>
+            )}
           </div>
         </div>
 
@@ -122,7 +135,7 @@ export const Settings: React.FC<SettingsProps> = ({ user, onUpdateUser }) => {
 
           <div className="pt-6 border-t border-slate-100 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
              <p className="text-xs text-slate-400 font-medium">
-               Changes are saved to your BrokeAF profile.
+               Changes are saved to your {isDemo ? 'local demo' : 'BrokeAF'} profile.
              </p>
              <div className="flex items-center gap-4 w-full md:w-auto">
                {successMsg && <span className="text-emerald-500 text-sm font-bold animate-pulse">{successMsg}</span>}
@@ -140,7 +153,7 @@ export const Settings: React.FC<SettingsProps> = ({ user, onUpdateUser }) => {
       </Card>
       
       <div className="text-center">
-        <p className="text-xs font-bold text-slate-300 dark:text-slate-700">App Version 3.3.0</p>
+        <p className="text-xs font-bold text-slate-300 dark:text-slate-700">App Version 3.3.0 (Name & Avatar)</p>
       </div>
     </div>
   );
