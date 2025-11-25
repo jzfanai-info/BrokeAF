@@ -15,6 +15,7 @@ import {
   Cell,
 } from "recharts";
 import DateRangeFilter, { DateRange } from "./DateRangeFilter";
+import "./../index.css";
 
 interface DashboardProps {
   transactions: Transaction[];
@@ -114,7 +115,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
   ];
 
   return (
-    <div className="space-y-5 animate-fade-in-up pt-5">
+    <div className="space-y-5 animate-fade-in-up pt-5 ">
       {/* Welcome Note */}
       <div className="mb-6">
         <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight text-slate-800 dark:text-white">

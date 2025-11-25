@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 export type DateRange = {
-  startDate: string | null;
-  endDate: string | null;
+  startDate: string | any;
+  endDate: string | any;
   label: string;
 };
 
