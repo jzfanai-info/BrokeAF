@@ -136,7 +136,7 @@ export const About: React.FC = () => {
             <li className="flex justify-between pt-2">
               <span>Design Language</span>
               <span className="font-mono text-xs bg-white/10 px-2 py-1 rounded">
-                BrokeAF Glass UI
+                BrokeAF Glass UI & UX
               </span>
             </li>
           </ul>
