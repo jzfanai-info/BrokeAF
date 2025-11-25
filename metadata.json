@@ -1,5 +1,5 @@
 {
   "name": "BrokeAF",
-  "description": "A professional personal finance dashboard featuring expense tracking, budget planning, and AI-powered financial insights using Gemini.",
+  "description": "A professional personal finance dashboard featuring expense tracking and budget planning.",
   "requestFramePermissions": []
 }

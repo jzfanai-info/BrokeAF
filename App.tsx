@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged, User, updateProfile } from 'firebase/auth';
 import { auth } from './firebase';
 import { Sidebar } from './components/Sidebar';
@@ -8,30 +8,22 @@ import { Auth } from './components/Auth';
 import { TransactionForm } from './components/TransactionForm';
 import { subscribeToTransactions, deleteTransaction } from './services/firestoreService';
 import { Transaction, AppRoute } from './types';
-import { X, Plus, Pencil, Filter, ArrowUpDown, ChevronLeft, ChevronRight, Search, Moon, Sun, Sparkles, Trash2 } from 'lucide-react';
+import { X, Pencil, ChevronLeft, ChevronRight, Search, Trash2 } from 'lucide-react';
 import { Card } from './components/ui/Card';
 import { Button } from './components/ui/Button';
 import { ConfirmModal } from './components/ui/ConfirmModal';
-import { SmartInsights } from './components/SmartInsights';
 import { BudgetPlanner } from './components/BudgetPlanner';
 import { About } from './components/About';
 import { Settings } from './components/Settings';
 
-interface DemoUser {
-  uid: string;
-  displayName: string;
-  email: string;
-  photoURL: string | null;
-}
-
-const ProtectedRoute: React.FC<React.PropsWithChildren<{ user: User | DemoUser | null; loading: boolean }>> = ({ children, user, loading }) => {
+const ProtectedRoute: React.FC<React.PropsWithChildren<{ user: User | null; loading: boolean }>> = ({ children, user, loading }) => {
   if (loading) return <div className="h-screen w-full flex items-center justify-center bg-rose-50 dark:bg-[#130b20]"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div></div>;
   if (!user) return <Navigate to={AppRoute.LOGIN} />;
   return <>{children}</>;
 };
 
 interface LayoutProps {
-  user: User | DemoUser;
+  user: User;
   onLogout: () => void;
   onAddTransaction: () => void;
 }
@@ -71,7 +63,7 @@ const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({ children, user
 };
 
 interface MainContentProps {
-  user: User | DemoUser;
+  user: User;
   onEditTransaction: (t: Transaction) => void;
   onUpdateUser: (updates: { photoURL?: string; displayName?: string }) => Promise<void>;
 }
@@ -307,12 +299,10 @@ const MainContent: React.FC<MainContentProps> = ({ user, onEditTransaction, onUp
           </div>
         } />
         <Route path={AppRoute.BUDGET} element={<BudgetPlanner userId={user.uid} transactions={transactions} />} />
-        <Route path={AppRoute.INSIGHTS} element={<SmartInsights transactions={transactions} />} />
         <Route path={AppRoute.ABOUT} element={<About />} />
         <Route path={AppRoute.SETTINGS} element={
           <Settings 
             user={user} 
-            isDemo={user.uid === 'DEMO_USER'} 
             onUpdateUser={onUpdateUser} 
           />
         } />
@@ -348,7 +338,6 @@ const Splash: React.FC = () => (
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [demoUser, setDemoUser] = useState<DemoUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
   
@@ -359,12 +348,6 @@ const App: React.FC = () => {
     // Artificial splash delay for effect
     const timer = setTimeout(() => setShowSplash(false), 2000);
     
-    const demoSession = localStorage.getItem('brokeaf_demo_session');
-    if (demoSession) {
-      setDemoUser(JSON.parse(demoSession));
-      setLoading(false);
-      return () => clearTimeout(timer);
-    }
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
@@ -375,32 +358,12 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const handleDemoLogin = () => {
-    const demo: DemoUser = {
-      uid: 'DEMO_USER',
-      displayName: 'Guest Bestie',
-      email: 'guest@brokeaf.app',
-      photoURL: null
-    };
-    localStorage.setItem('brokeaf_demo_session', JSON.stringify(demo));
-    setDemoUser(demo);
-  };
-
   const handleLogout = async () => {
-    if (demoUser) {
-      localStorage.removeItem('brokeaf_demo_session');
-      setDemoUser(null);
-    } else {
-      await auth.signOut();
-    }
+    await auth.signOut();
   };
 
   const handleUserUpdate = async (updates: { photoURL?: string; displayName?: string }) => {
-    if (demoUser) {
-      const updated = { ...demoUser, ...updates };
-      setDemoUser(updated);
-      localStorage.setItem('brokeaf_demo_session', JSON.stringify(updated));
-    } else if (user && auth.currentUser) {
+    if (user && auth.currentUser) {
        await updateProfile(auth.currentUser, updates);
        // Force update local state to reflect changes immediately by creating a new reference
        setUser({ ...auth.currentUser }); 
@@ -417,27 +380,25 @@ const App: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const currentUser = user || demoUser;
-
   if (showSplash) return <Splash />;
 
   return (
     <HashRouter>
       <Routes>
-        <Route path={AppRoute.LOGIN} element={!currentUser ? <Auth onDemoLogin={handleDemoLogin} /> : <Navigate to={AppRoute.DASHBOARD} />} />
-        <Route path={AppRoute.REGISTER} element={!currentUser ? <Auth isRegister onDemoLogin={handleDemoLogin} /> : <Navigate to={AppRoute.DASHBOARD} />} />
+        <Route path={AppRoute.LOGIN} element={!user ? <Auth /> : <Navigate to={AppRoute.DASHBOARD} />} />
+        <Route path={AppRoute.REGISTER} element={!user ? <Auth isRegister /> : <Navigate to={AppRoute.DASHBOARD} />} />
         <Route 
           path="/*" 
           element={
-            <ProtectedRoute user={currentUser} loading={loading}>
-              {currentUser && (
+            <ProtectedRoute user={user} loading={loading}>
+              {user && (
                 <Layout 
-                  user={currentUser} 
+                  user={user} 
                   onLogout={handleLogout} 
                   onAddTransaction={openAddModal}
                 >
                   <MainContent 
-                    user={currentUser} 
+                    user={user} 
                     onEditTransaction={openEditModal} 
                     onUpdateUser={handleUserUpdate}
                   />
@@ -449,7 +410,7 @@ const App: React.FC = () => {
       </Routes>
 
       {/* Global Modal */}
-      {isModalOpen && currentUser && (
+      {isModalOpen && user && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
           <Card className="w-full max-w-md p-8 relative shadow-2xl border-2 border-white/50 dark:border-white/10">
             <button 
@@ -462,7 +423,7 @@ const App: React.FC = () => {
               {editingTransaction ? 'Edit Entry' : 'New Entry'}
             </h3>
             <TransactionForm 
-              userId={currentUser.uid} 
+              userId={user.uid} 
               onClose={() => setIsModalOpen(false)} 
               initialData={editingTransaction}
             />

@@ -52,7 +52,6 @@ export enum AppRoute {
   DASHBOARD = '/',
   TRANSACTIONS = '/transactions',
   BUDGET = '/budget',
-  INSIGHTS = '/insights',
   SETTINGS = '/settings',
   ABOUT = '/about',
   LOGIN = '/login',

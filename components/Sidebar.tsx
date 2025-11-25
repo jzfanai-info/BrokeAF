@@ -4,14 +4,14 @@ import {
   LayoutDashboard, 
   Receipt, 
   PieChart, 
-  Sparkles, 
   Settings, 
   LogOut,
   Plus,
   Moon,
   Sun,
   User as UserIcon,
-  ChevronDown
+  ChevronDown,
+  Info
 } from 'lucide-react';
 import { AppRoute } from '../types';
 
@@ -33,7 +33,7 @@ const navLinks = [
   { icon: LayoutDashboard, label: 'Dash', path: AppRoute.DASHBOARD },
   { icon: Receipt, label: 'History', path: AppRoute.TRANSACTIONS },
   { icon: PieChart, label: 'Budget', path: AppRoute.BUDGET },
-  { icon: Sparkles, label: 'Insights', path: AppRoute.INSIGHTS },
+  { icon: Info, label: 'About', path: AppRoute.ABOUT },
   { icon: Settings, label: 'Settings', path: AppRoute.SETTINGS },
 ];
 
@@ -119,7 +119,7 @@ export const Sidebar: React.FC<NavbarProps> = ({ user, onLogout, onAddTransactio
         {/* Center: Navigation Icons Group */}
         <div className="flex items-center justify-center">
           <div className="flex items-center gap-6 p-1">
-             {/* Only map the navigation links (exclude Utility links which are handled separately or via actions) */}
+             {/* Map first 4 links: Dash, History, Budget, About */}
              {navLinks.slice(0, 4).map((item) => (
                <div key={item.path}>
                  <NavItem item={item} />
@@ -244,7 +244,7 @@ export const Sidebar: React.FC<NavbarProps> = ({ user, onLogout, onAddTransactio
                <NavItem item={navLinks[2]} mobile />
              </div>
 
-             {/* 5. Insights (Replaces Settings which is now in top right) */}
+             {/* 5. About (Replaces Insights) */}
              <div onClick={() => setIsProfileOpen(false)}>
                <NavItem item={navLinks[3]} mobile />
              </div>

@@ -8,10 +8,9 @@ import { Card } from './ui/Card';
 
 interface AuthProps {
   isRegister?: boolean;
-  onDemoLogin?: () => void;
 }
 
-export const Auth: React.FC<AuthProps> = ({ isRegister = false, onDemoLogin }) => {
+export const Auth: React.FC<AuthProps> = ({ isRegister = false }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -34,7 +33,7 @@ export const Auth: React.FC<AuthProps> = ({ isRegister = false, onDemoLogin }) =
       navigate(AppRoute.DASHBOARD);
     } catch (err: any) {
       if (err.code === 'auth/api-key-not-valid.-please-pass-a-valid-api-key.') {
-        setError('Config Error. Use Demo Mode.');
+        setError('Config Error. Check Firebase Console.');
       } else {
         setError('Invalid credentials.');
       }
@@ -109,16 +108,6 @@ export const Auth: React.FC<AuthProps> = ({ isRegister = false, onDemoLogin }) =
           <Button type="submit" isLoading={loading} className="w-full py-4 text-lg mt-2">
             {isRegister ? 'Sign Up' : 'Log In'}
           </Button>
-
-          {onDemoLogin && (
-            <button
-              type="button"
-              onClick={onDemoLogin}
-              className="w-full py-3 rounded-full border-2 border-slate-100 dark:border-white/10 hover:border-pink-400 text-slate-500 hover:text-pink-500 font-bold transition-all text-sm mt-4 bg-white/50 dark:bg-white/5"
-            >
-              Take a Look Around (Demo)
-            </button>
-          )}
         </form>
       </Card>
 

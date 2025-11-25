@@ -5,9 +5,7 @@ import {
   Layers, 
   Code2, 
   GitBranch, 
-  Terminal, 
   Database,
-  Cpu,
   Lock,
   Heart
 } from 'lucide-react';
@@ -33,11 +31,11 @@ export const About: React.FC = () => {
                <h2 className="text-xl font-bold mb-2 font-display text-slate-900 dark:text-white">System Overview</h2>
                <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
                  BrokeAF is a vibrant personal finance dashboard designed to demonstrate modern web application architecture with a focus on UX and aesthetics. 
-                 It features real-time data synchronization, AI-powered insights, and a dual-mode data layer (Firebase + LocalStorage).
+                 It features real-time data synchronization and a dual-mode data layer (Firebase + LocalStorage).
                </p>
                <div className="mt-4 flex flex-wrap gap-2">
-                 <span className="px-2 py-1 bg-slate-100 dark:bg-white/10 rounded text-xs font-mono dark:text-white">v3.0.0</span>
-                 <span className="px-2 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 rounded text-xs font-mono">Colorful Release</span>
+                 <span className="px-2 py-1 bg-slate-100 dark:bg-white/10 rounded text-xs font-mono dark:text-white">v3.1.0</span>
+                 <span className="px-2 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 rounded text-xs font-mono">Lite Edition</span>
                </div>
              </div>
           </div>
@@ -69,10 +67,6 @@ export const About: React.FC = () => {
               <span className="text-emerald-500">✓</span> 
               <span><strong>Budget Planning:</strong> Visual progress bars for monthly category limits.</span>
             </li>
-             <li className="flex gap-2">
-              <span className="text-emerald-500">✓</span> 
-              <span><strong>AI Insights:</strong> Gemini 2.5 integration for spending pattern analysis.</span>
-            </li>
           </ul>
         </Card>
 
@@ -93,10 +87,6 @@ export const About: React.FC = () => {
             <li className="flex justify-between border-b border-slate-100 dark:border-white/5 pb-1">
               <span>Backend / DB</span>
               <span className="font-mono text-xs bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded">Firebase Firestore</span>
-            </li>
-             <li className="flex justify-between border-b border-slate-100 dark:border-white/5 pb-1">
-              <span>Artificial Intelligence</span>
-              <span className="font-mono text-xs bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded">Google GenAI SDK</span>
             </li>
              <li className="flex justify-between pt-1">
               <span>Design System</span>
@@ -132,16 +122,6 @@ export const About: React.FC = () => {
             <ShieldAlert className="w-5 h-5 text-rose-500" /> Vulnerabilities & Security
           </h3>
           <div className="space-y-4 text-sm">
-             <div className="bg-rose-50 dark:bg-rose-900/10 p-3 rounded-lg border border-rose-100 dark:border-rose-900/30">
-               <h4 className="font-bold text-rose-600 dark:text-rose-400 mb-1 flex items-center gap-2">
-                 <Cpu size={14} /> Client-Side API Keys
-               </h4>
-               <p className="text-rose-500 dark:text-rose-300/80 text-xs leading-relaxed">
-                 The Gemini API key is currently accessed via <code>process.env</code> in the client-side bundle. 
-                 In production, utilize a proxy server.
-               </p>
-             </div>
-
              <div className="bg-rose-50 dark:bg-rose-900/10 p-3 rounded-lg border border-rose-100 dark:border-rose-900/30">
                <h4 className="font-bold text-rose-600 dark:text-rose-400 mb-1 flex items-center gap-2">
                  <Database size={14} /> Firestore Rules
